@@ -11,13 +11,13 @@
         Favorites
       </ion-segment-button>
     </ion-segment>
-    <ion-title *ngIf="!ios && !showSearchbar">Schedule</ion-title>
+    <ion-title *ngIf="!ios && !showSearchbar">Passbook</ion-title>
     <ion-searchbar *ngIf="showSearchbar" showCancelButton="always" [(ngModel)]="queryText" (ionChange)="updateSchedule()" (ionCancel)="showSearchbar = false" placeholder="Search"></ion-searchbar>
     <ion-buttons slot="end">
       <ion-button *ngIf="!ios && !showSearchbar" (click)="showSearchbar = true">
         <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
-      <ion-button *ngIf="!showSearchbar" (click)="presentFilter()">
+      <ion-button *ngIf="!showSearchbar" >
         <span *ngIf="ios">Filter</span>
         <span *ngIf="!ios">
           <ion-icon slot="icon-only" name="options"></ion-icon>
@@ -40,7 +40,7 @@
 <ion-content fullscreen="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Schedule</ion-title>
+      <ion-title size="large">Passbook</ion-title>
     </ion-toolbar>
     <ion-toolbar>
       <ion-searchbar [(ngModel)]="queryText" (ionChange)="updateSchedule()" placeholder="Search"></ion-searchbar>
@@ -48,10 +48,10 @@
   </ion-header>
 
   <ion-list #scheduleList [hidden]="shownSessions === 0">
-    <ion-item-group *ngFor="let group of groups" [hidden]="group.hide">
+    <ion-item-group *ngFor="let group of groups" [hidden]="false">
       <ion-item-divider sticky>
         <ion-label>
-          {{group.time}}
+          3rd October 2021
         </ion-label>
       </ion-item-divider>
 
@@ -59,9 +59,9 @@
         [hidden]="session.hide">
         <ion-item routerLink="/app/tabs/schedule/session/{{session.id}}">
           <ion-label>
-            <h3>{{session.name}}</h3>
+            <h3>Paid at McD</h3>
             <p>
-              {{session.timeStart}} &mdash; {{session.timeEnd}}: {{session.location}}
+              Rs. 10,000 &mdash; 22 Feb, 07:11 PM
             </p>
           </ion-label>
         </ion-item>

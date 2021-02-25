@@ -25,6 +25,11 @@ export class SchedulePage implements OnInit {
   confDate: string;
   showSearchbar: boolean;
 
+  transactions = [
+      {"name" : "Transaction1", "amount": "400rs", "id": 1},
+      {"name" : "Transaction1", "amount": "400rs", "id": 2},
+  ];
+
   constructor(
     public alertCtrl: AlertController,
     public confData: ConferenceData,
@@ -50,6 +55,7 @@ export class SchedulePage implements OnInit {
     }
 
     this.confData.getTimeline(this.dayIndex, this.queryText, this.excludeTracks, this.segment).subscribe((data: any) => {
+      console.log(data);
       this.shownSessions = data.shownSessions;
       this.groups = data.groups;
     });
@@ -91,11 +97,9 @@ export class SchedulePage implements OnInit {
           role: 'cancel'
         }]
       });
-
       // Present the toast at the bottom of the page
       await toast.present();
     }
-
   }
 
   async removeFavorite(slidingItem: HTMLIonItemSlidingElement, sessionData: any, title: string) {
