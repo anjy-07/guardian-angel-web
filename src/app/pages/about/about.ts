@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 import { PopoverPage } from '../about-popover/about-popover';
+import { UserServiceService } from '../../user-service.service';
 
 @Component({
   selector: 'page-about',
@@ -17,7 +18,7 @@ export class AboutPage {
     header: 'Select a Location'
   };
 
-  constructor(public popoverCtrl: PopoverController) { }
+  constructor(public popoverCtrl: PopoverController, private userService: UserServiceService) { }
 
   async presentPopover(event: Event) {
     const popover = await this.popoverCtrl.create({
@@ -25,5 +26,9 @@ export class AboutPage {
       event
     });
     await popover.present();
+  }
+
+  switchViews(userType: string) {
+    this.userService.switchViews(userType);
   }
 }

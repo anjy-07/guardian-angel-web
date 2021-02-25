@@ -10,6 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
 
 import { UserData } from './providers/user-data';
+import { UserServiceService } from './user-service.service';
 
 @Component({
   selector: 'app-root',
@@ -26,32 +27,62 @@ export class AppComponent implements OnInit {
     },
     {
       title: 'Select Location',
-      url: '/app/tabs',
+      url: '/app/tabs/map',
       icon: 'navigate'
     },
-   
+    {
+      title: 'About',
+      url: '/app/tabs/about',
+      icon: 'information'
+    },
   ];
+  userAppPages = [
+    {
+      title: 'PassBook',
+      url: '/app/tabs/schedule',
+      icon: 'calendar'
+    },
+    {
+      title: 'Select Location',
+      url: '/app/tabs/map',
+      icon: 'navigate'
+    },
+    {
+      title: 'About',
+      url: '/app/tabs/about',
+      icon: 'information'
+    },
+  ];
+
+  guardianAppPages = [
+    {
+      title: 'PassBook',
+      url: '/app/tabs/schedule',
+      icon: 'calendar'
+    },
+    {
+      title: 'About',
+      url: '/app/tabs/about',
+      icon: 'information'
+    },
+  ]
+
+
   loggedIn = false;
   dark = false;
 
   constructor(
-    private menu: MenuController,
-    private platform: Platform,
-    private router: Router,
-    private splashScreen: SplashScreen,
-    private statusBar: StatusBar,
-    private storage: Storage,
-    private userData: UserData,
     private swUpdate: SwUpdate,
     private toastCtrl: ToastController,
+    private userService: UserServiceService
   ) {
-    this.initializeApp();
+   // this.initializeApp();
   }
 
   async ngOnInit() {
-    this.checkLoginStatus();
-    this.listenForLoginEvents();
-
+    this.userService.switchViewSource$.subscribe((userType: string) => {
+      this.switchViews(userType);
+    })
     this.swUpdate.available.subscribe(async res => {
       const toast = await this.toastCtrl.create({
         message: 'Update available!',
@@ -72,49 +103,13 @@ export class AppComponent implements OnInit {
         .then(() => window.location.reload());
     });
   }
-
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-    });
-  }
-
-  checkLoginStatus() {
-    return this.userData.isLoggedIn().then(loggedIn => {
-      return this.updateLoggedInStatus(loggedIn);
-    });
-  }
-
-  updateLoggedInStatus(loggedIn: boolean) {
-    setTimeout(() => {
-      this.loggedIn = loggedIn;
-    }, 300);
-  }
-
-  listenForLoginEvents() {
-    window.addEventListener('user:login', () => {
-      this.updateLoggedInStatus(true);
-    });
-
-    window.addEventListener('user:signup', () => {
-      this.updateLoggedInStatus(true);
-    });
-
-    window.addEventListener('user:logout', () => {
-      this.updateLoggedInStatus(false);
-    });
-  }
-
-  logout() {
-    this.userData.logout().then(() => {
-      return this.router.navigateByUrl('/app/tabs/schedule');
-    });
-  }
-
-  openTutorial() {
-    this.menu.enable(false);
-    this.storage.set('ion_did_tutorial', false);
-    this.router.navigateByUrl('/tutorial');
+  switchViews(userType: string) {
+    console.log(userType)
+    this.userService.currentUserType = 'userType';
+    if(userType == 'user') {
+      this.appPages = [...this.userAppPages];
+    } else {
+      this.appPages = [...this.guardianAppPages];
+    }
   }
 }

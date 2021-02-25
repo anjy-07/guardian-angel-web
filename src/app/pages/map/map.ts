@@ -1,8 +1,7 @@
-import { Component, ElementRef, Inject, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ElementRef, Inject, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
 import { Platform } from '@ionic/angular';
 import { DOCUMENT} from '@angular/common';
-
 import { darkStyle } from './map-dark-style';
 
 @Component({
@@ -13,10 +12,42 @@ import { darkStyle } from './map-dark-style';
 export class MapPage implements AfterViewInit {
   @ViewChild('mapCanvas', { static: true }) mapElement: ElementRef;
 
+  @ViewChild('animation', { static: true }) animationEffect : ElementRef;
+  pageHeader: String = 'Location';
+  paymentDone: boolean = false;
+  locationSelected : boolean = false;
+
+  locations = [
+    {"name" : "McDonalds", "imgUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F4b%2FMcDonald%2527s_logo.svg%2F220px-McDonald%2527s_logo.svg.png&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMcDonald%2527s&tbnid=vHOwZP6qyoY5OM&vet=12ahUKEwj-0ZTA9IXvAhWRsksFHbqzAaMQMygKegUIARC8AQ..i&docid=tg3qNrQIjRxkLM&w=220&h=167&itg=1&q=mcd&ved=2ahUKEwj-0ZTA9IXvAhWRsksFHbqzAaMQMygKegUIARC8AQ"},
+    {"name" : "BurgerKing", "imgUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F4b%2FMcDonald%2527s_logo.svg%2F220px-McDonald%2527s_logo.svg.png&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMcDonald%2527s&tbnid=vHOwZP6qyoY5OM&vet=12ahUKEwj-0ZTA9IXvAhWRsksFHbqzAaMQMygKegUIARC8AQ..i&docid=tg3qNrQIjRxkLM&w=220&h=167&itg=1&q=mcd&ved=2ahUKEwj-0ZTA9IXvAhWRsksFHbqzAaMQMygKegUIARC8AQ"},
+    {"name" : "Pertol Pump", "imgUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F4b%2FMcDonald%2527s_logo.svg%2F220px-McDonald%2527s_logo.svg.png&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMcDonald%2527s&tbnid=vHOwZP6qyoY5OM&vet=12ahUKEwj-0ZTA9IXvAhWRsksFHbqzAaMQMygKegUIARC8AQ..i&docid=tg3qNrQIjRxkLM&w=220&h=167&itg=1&q=mcd&ved=2ahUKEwj-0ZTA9IXvAhWRsksFHbqzAaMQMygKegUIARC8AQ"}
+  ]
+
   constructor(
     @Inject(DOCUMENT) private doc: Document,
     public confData: ConferenceData,
-    public platform: Platform) {}
+    public platform: Platform,
+    private cdref: ChangeDetectorRef) {}
+
+    ngOnInit() {
+      console.log("IN MAPS")
+    }
+    payBtnClicked() {
+      this.pageHeader = 'Payment';
+      // make network call and give the user transaction entity to backend
+      this.paymentDone = true;
+      this.cdref.detectChanges();
+      const appEl = this.doc.querySelector('#animation');
+      appEl.classList.add('load-complete');
+      setTimeout(() => {
+        this.doc.getElementById('checkmark').style.display='block';
+      }, 2000);
+    }
+
+    onLocationSelect(location: any) {
+      console.log(location)
+      this.locationSelected = true;
+    }
 
   async ngAfterViewInit() {
     const appEl = this.doc.querySelector('ion-app');
@@ -80,6 +111,7 @@ export class MapPage implements AfterViewInit {
     });
   }
 }
+
 
 function getGoogleMaps(apiKey: string): Promise<any> {
   const win = window as any;
