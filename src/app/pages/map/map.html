@@ -42,11 +42,18 @@
 </ion-content>
 
 <ion-content fullscreen="true" *ngIf="locationSelected">
-  <h3 style="text-align: center; margin-top: 15%;">Pay for your Order : $200</h3>
-  <h3 style="text-align: center; ">Hope you had a great meal!</h3>
-  <ion-card class="card-gradient" style="margin-top:20%">
+  <h3 style="text-align: center; margin-top: 10%;">Pay for your Order : $200</h3>
+  <h5 style="text-align: center; color: darkseagreen;">Here's your temporary card, Enjoy!</h5>
+
+  <ion-card style="background-color: darkgrey;">
     <ion-card-header>
-      <ion-card-title class="card-number">0000 0000 0000 0000</ion-card-title>
+      <ion-card-title style="text-align:center;">Credit Limit : ${{cardCredential.ccLimit}}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+  
+  <ion-card class="card-gradient" style="margin-top:13%">
+    <ion-card-header>
+      <ion-card-title class="card-number">{{cardCredential.ccNumber}}</ion-card-title>
     </ion-card-header>
      
     <ion-card-content>
@@ -55,18 +62,15 @@
       
         <ion-row class="ion-align-items-center">
           <ion-col>
-            [center] ion-col
+            <h3 class="holder-name">
+              Anjali Verma
+            </h3>
+           
           </ion-col>
           <ion-col>
-            [center] ion-col
-          </ion-col>
-          <ion-col>
-            [center] ion-col
-          </ion-col>
-          <ion-col>
-            ion-col
-            <br>#
-            <br>#
+            <h3 class="expiry-date">
+             {{cardCredential.ccExpDate}}
+            </h3>
           </ion-col>
         </ion-row>
       

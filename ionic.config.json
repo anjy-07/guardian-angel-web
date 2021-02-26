@@ -3,5 +3,9 @@
   "type": "angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "proxies": [{
+    "path": "/getCreditDetails",
+    "proxyUrl": "http://localhost:8080/getCreditDetails"
+  }]
 }

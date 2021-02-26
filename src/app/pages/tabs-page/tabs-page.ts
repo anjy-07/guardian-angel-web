@@ -9,13 +9,13 @@ export class TabsPage {
   tabsArray = [
     { "tabUrl": "about", "name" : "About", "icon": "information-circle"} ,
     { "tabUrl": "schedule", "name" : "Passbook", "icon": "calendar"}, 
-    { "tabUrl": "map", "name" : "Location", "icon": "location"},
+    { "tabUrl": "map", "name" : "Payment", "icon": "location"},
   ];
   
   tabsUserArray = [
     { "tabUrl": "about", "name" : "About", "icon": "information-circle"} ,
     { "tabUrl": "schedule", "name" : "Passbook", "icon": "calendar"}, 
-    { "tabUrl": "map", "name" : "Location", "icon": "location"},
+    { "tabUrl": "map", "name" : "Payment", "icon": "location"},
   ];
 
   tabsGuardianArray = [

@@ -3,6 +3,7 @@ import { ConferenceData } from '../../providers/conference-data';
 import { Platform } from '@ionic/angular';
 import { DOCUMENT} from '@angular/common';
 import { darkStyle } from './map-dark-style';
+import { UserServiceService } from '../../user-service.service';
 
 @Component({
   selector: 'page-map',
@@ -16,6 +17,14 @@ export class MapPage implements AfterViewInit {
   pageHeader: String = 'Location';
   paymentDone: boolean = false;
   locationSelected : boolean = false;
+  cardCredential  = {
+    "ccId": 1,
+    "ccNumber": "4916247691976171",
+    "ccCVV": 234,
+    "ccLimit": 0.0,
+    "ccBalance": 0.0,
+    "ccExpDate": "03/23"
+  };
 
   locations = [
     {"name" : "McDonalds", "imgUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2F4%2F4b%2FMcDonald%2527s_logo.svg%2F220px-McDonald%2527s_logo.svg.png&imgrefurl=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMcDonald%2527s&tbnid=vHOwZP6qyoY5OM&vet=12ahUKEwj-0ZTA9IXvAhWRsksFHbqzAaMQMygKegUIARC8AQ..i&docid=tg3qNrQIjRxkLM&w=220&h=167&itg=1&q=mcd&ved=2ahUKEwj-0ZTA9IXvAhWRsksFHbqzAaMQMygKegUIARC8AQ"},
@@ -27,7 +36,8 @@ export class MapPage implements AfterViewInit {
     @Inject(DOCUMENT) private doc: Document,
     public confData: ConferenceData,
     public platform: Platform,
-    private cdref: ChangeDetectorRef) {}
+    private cdref: ChangeDetectorRef,
+    private userService: UserServiceService) {}
 
     ngOnInit() {
       console.log("IN MAPS")
@@ -46,7 +56,12 @@ export class MapPage implements AfterViewInit {
 
     onLocationSelect(location: any) {
       console.log(location)
-      this.locationSelected = true;
+      this.userService.getCredentials().subscribe((data) => {
+        console.log(data);
+        this.locationSelected = true;
+
+      })
+
     }
 
   async ngAfterViewInit() {
