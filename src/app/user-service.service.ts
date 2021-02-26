@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
@@ -31,6 +31,13 @@ export class UserServiceService {
   };
 
   private switchViewSource = new Subject<string>();
+  
+  // public transactionObservable = this.transactionSubject.asObservable();
+
+
+  // updateTransaction(value: any) {
+  //   this.transactionSubject.next(value);
+  // }
 
   // Observable string streams
   switchViewSource$ = this.switchViewSource.asObservable();

@@ -44,9 +44,9 @@ export class MapPage implements AfterViewInit {
   userName : string = '';
   cardCredential  = {
     "ccId": 1,
-    "ccNumber": "4916247691976171",
+    "ccNumber": "4916 2476 9197 6171",
     "ccCVV": 234,
-    "ccLimit": 0.0,
+    "ccLimit": 100.0,
     "ccBalance": 0.0,
     "ccExpDate": "03/23"
   };
@@ -69,6 +69,30 @@ export class MapPage implements AfterViewInit {
     "merchant_id" : 2,
     "merchant_category" : "petroleum", 
     "merchant_name" : "Burger King",
+    "merchant_addr_street" : "Fort", 
+    "merchant_addr_city" : "Mumbai",
+    "imgUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.pngio.com%2Findex-of-wp-content-uploads-2015-02-burger-king-logo-png-3000_3000.png&imgrefurl=https%3A%2F%2Fpngio.com%2FPNG%2Fa36184-burger-king-logo-png.html&tbnid=Z1GtvYOiP5l31M&vet=12ahUKEwiU2qCigIfvAhXTAXIKHcM5BWAQMygAegQIARBP..i&docid=Qzd3UnSvBrxHdM&w=3000&h=3000&q=burger%20king%20logo%20avatar&ved=2ahUKEwiU2qCigIfvAhXTAXIKHcM5BWAQMygAegQIARBP"
+  },
+  {
+    "merchant_id" : 3,
+    "merchant_category" : "petroleum", 
+    "merchant_name" : "Pertol Pump",
+    "merchant_addr_street" : "Fort", 
+    "merchant_addr_city" : "Mumbai",
+    "imgUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.pngio.com%2Findex-of-wp-content-uploads-2015-02-burger-king-logo-png-3000_3000.png&imgrefurl=https%3A%2F%2Fpngio.com%2FPNG%2Fa36184-burger-king-logo-png.html&tbnid=Z1GtvYOiP5l31M&vet=12ahUKEwiU2qCigIfvAhXTAXIKHcM5BWAQMygAegQIARBP..i&docid=Qzd3UnSvBrxHdM&w=3000&h=3000&q=burger%20king%20logo%20avatar&ved=2ahUKEwiU2qCigIfvAhXTAXIKHcM5BWAQMygAegQIARBP"
+  },
+  {
+    "merchant_id" : 4,
+    "merchant_category" : "petroleum", 
+    "merchant_name" : "Cafe Coffee Day",
+    "merchant_addr_street" : "Fort", 
+    "merchant_addr_city" : "Mumbai",
+    "imgUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.pngio.com%2Findex-of-wp-content-uploads-2015-02-burger-king-logo-png-3000_3000.png&imgrefurl=https%3A%2F%2Fpngio.com%2FPNG%2Fa36184-burger-king-logo-png.html&tbnid=Z1GtvYOiP5l31M&vet=12ahUKEwiU2qCigIfvAhXTAXIKHcM5BWAQMygAegQIARBP..i&docid=Qzd3UnSvBrxHdM&w=3000&h=3000&q=burger%20king%20logo%20avatar&ved=2ahUKEwiU2qCigIfvAhXTAXIKHcM5BWAQMygAegQIARBP"
+  },
+  {
+    "merchant_id" : 5,
+    "merchant_category" : "petroleum", 
+    "merchant_name" : "Reliance Smart",
     "merchant_addr_street" : "Fort", 
     "merchant_addr_city" : "Mumbai",
     "imgUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.pngio.com%2Findex-of-wp-content-uploads-2015-02-burger-king-logo-png-3000_3000.png&imgrefurl=https%3A%2F%2Fpngio.com%2FPNG%2Fa36184-burger-king-logo-png.html&tbnid=Z1GtvYOiP5l31M&vet=12ahUKEwiU2qCigIfvAhXTAXIKHcM5BWAQMygAegQIARBP..i&docid=Qzd3UnSvBrxHdM&w=3000&h=3000&q=burger%20king%20logo%20avatar&ved=2ahUKEwiU2qCigIfvAhXTAXIKHcM5BWAQMygAegQIARBP"
@@ -98,7 +122,7 @@ export class MapPage implements AfterViewInit {
           "timeOfDay" : 20,
           "Fstatus" : "SUCCESS"
        }
-      this.userService.registerTransaction(transaction).subscribe(() => {
+     
         this.paymentDone = true;
         this.cdref.detectChanges();
         const appEl = this.doc.querySelector('#animation');
@@ -106,7 +130,7 @@ export class MapPage implements AfterViewInit {
         setTimeout(() => {
           this.doc.getElementById('checkmark').style.display='block';
         }, 1500);
-      });
+   
       
     }
     initializeWebSocketConnection() {
@@ -120,8 +144,7 @@ export class MapPage implements AfterViewInit {
           that.stompClient.subscribe('/topic/send-approval', async (message) => {
             console.log(message)
             if (message.body) {
-              alert(message.body);
-              const toast = await this.toastCtrl.create({
+              const toast = await that.toastCtrl.create({
                 message: 'Voila! Request Approved',
                 position: 'bottom',
                 duration: 2000
@@ -141,24 +164,14 @@ export class MapPage implements AfterViewInit {
       
     }
 
-    async onLocationSelect(location: any) {
-        this.stompClient.send("/app/user", {}, 
-        JSON.stringify({'from': 'anjali', 'creditRequest':'10', 'approved': "true"}));
-        this.userService.getCredentials(location).subscribe(async (data) => {
-          console.log(data);
-          this.creditInfo = data;
-          if(this.userService.user1.current_amount > this.creditInfo.ccLimit) {
+    onLocationSelect(location: any) {
+       
+          if(this.cardCredential.ccLimit < this.currentAmount) {
             this.stompClient.send("/app/user", {}, 
             JSON.stringify({'from': 'user', 'creditRequest':'10', 'approved': "true"}));
-          } else {
-            this.userService.getCredentials(location).subscribe((data) => {
-              console.log(data);
-              this.creditInfo = data;
-              this.selectedMerchant = {...location};
-            });
-          }
+          } 
           this.locationSelected = true;
-        })
+        
     }
 
     

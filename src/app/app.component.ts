@@ -96,15 +96,18 @@ export class AppComponent implements OnInit {
           that.stompClient.subscribe('/topic/get-approval', (message) => {
             console.log(message);
             if (message.body) {
-              if(window.confirm("Do you want to approve the request")) {
-                this.stompClient.send("/app/guardian", {}, 
-                JSON.stringify({'from': 'anjali', 'creditRequest':'10', 'approved': "true"}));
-              } else {
-                this.stompClient.send("/app/guardian", {}, 
-                  JSON.stringify({'from': 'anjali', 'creditRequest':'10', 'approved': "false"}));
-              }
+              // console.log(that);
+              // console.log(that.stompClient)
+              // if(window.confirm("Do you want to approve the request")) {
+              //   that.stompClient.send("/app/guardian", {}, 
+              //   JSON.stringify({'from': 'anjali', 'creditRequest':'10', 'approved': "true"}));
+              // }
+              // // } else {
+              // //   this.stompClient.send("/app/guardian", {}, 
+              // //     JSON.stringify({'from': 'anjali', 'creditRequest':'10', 'approved': "false"}));
+              // // }
             
-              this.showPrompt();       
+              that.showPrompt();       
             }
           });
         });
@@ -157,35 +160,20 @@ export class AppComponent implements OnInit {
   }
 
 
-  showPrompt() {
-    this.alertController.create({
-      header: 'Prompt Alert',
-      subHeader: 'Enter information requested',
-      message: 'Enter your favorate place',
-      inputs: [
-        {
-          name: 'Place',
-          placeholder: 'Eg.NY',
-          
-        },
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          handler: (data: any) => {
-            console.log('Canceled', data);
-          }
-        },
-        {
-          text: 'Done!',
-          handler: (data: any) => {
-            console.log('Saved Information', data);
-          }
+  async showPrompt() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Alert!!!',
+      message: 'You Guardian is asking to load $100 more, Do you want to approve?',
+      buttons: [{
+        text : 'Ok',
+        handler: () => {
+          this.stompClient.send("/app/guardian", {}, 
+          JSON.stringify({'from': 'anjali', 'creditRequest':'10', 'approved': "true"}));
         }
-      ]
-    }).then(res => {
-      res.present();
+      }]
     });
+    await alert.present();
   }
 
   
