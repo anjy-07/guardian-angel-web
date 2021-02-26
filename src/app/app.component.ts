@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
       console.log("hereeee");
       if(userType == 'guardian') {
         console.log("coming hereeee")
-        const serverUrl = 'http://35.196.133.79/guardian';
+        const serverUrl = 'http://localhost:8080/guardian';
         const ws = new SockJS(serverUrl);
         this.stompClient = Stomp.over(ws);
         const that = this;
@@ -145,7 +145,7 @@ export class AppComponent implements OnInit {
       //         alert(JSON.parse(messageOutput.body));
       //     });
       // });
-      // var socket1 = new SockJS('http://35.196.133.79/guardian');
+      // var socket1 = new SockJS('http://localhost:8080/guardian');
       // stompClient1 = Stomp.over(socket);  
       // stompClient1.connect({}, function(frame) {
       //     setConnected(true);

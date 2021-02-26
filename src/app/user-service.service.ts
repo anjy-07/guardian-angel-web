@@ -30,7 +30,7 @@ export class UserServiceService {
     })
   };
 
-  private switchViewSource = new Subject<string>();
+  private switchViewSource = new BehaviorSubject<string>('user');
   
   // public transactionObservable = this.transactionSubject.asObservable();
 
@@ -62,10 +62,10 @@ export class UserServiceService {
       },
       "time_of_day" : 20
   }
-    return this.httpClient.post('http://35.196.133.79/getCreditDetails', user, this.httpOptions);
+    return this.httpClient.post('http://localhost:8080/getCreditDetails', user, this.httpOptions);
   }
 
   registerTransaction(transaction) {
-    return this.httpClient.post('http://35.196.133.79/registerTransaction', transaction, this.httpOptions);
+    return this.httpClient.post('http://localhost:8080/registerTransaction', transaction, this.httpOptions);
   }
  }

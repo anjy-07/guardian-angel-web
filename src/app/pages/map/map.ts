@@ -33,6 +33,7 @@ export class MapPage implements AfterViewInit {
   locationSelected : boolean = false;
   creditInfo  : any = {};
   currentAmount : number = 200;
+  payBtn: boolean = true;
   selectedMerchant : merchant= {
     "merchant_id" : 1,
     "merchant_category" : '',
@@ -104,10 +105,38 @@ export class MapPage implements AfterViewInit {
     public platform: Platform,
     private cdref: ChangeDetectorRef,
     private toastCtrl: ToastController,
-    private userService: UserServiceService) {}
+    private userService: UserServiceService) {
+      this.userService.switchViewSource$.subscribe((userType: string) => {
+        if(userType == 'user') {
+          const serverUrl = 'http://localhost:8080/user';
+          const ws = new SockJS(serverUrl);
+          this.stompClient = Stomp.over(ws);
+          const that = this;
+          this.stompClient.connect({}, function(frame) {
+            that.stompClient.subscribe('/topic/send-approval', async (message) => {
+              console.log(message)
+              if (message.body) {
+                
+                const toast = await that.toastCtrl.create({
+                  message: 'Voila! Request Approved',
+                  position: 'bottom',
+                  duration: 2000
+                });
+                await toast.present();
+                this.payBtn = false;
+                toast
+                  .onDidDismiss()
+                  .then(() => console.log("hi"));
+               // that.msg.push(message.body);
+              }
+            });
+          });
+        }
+    });
+    }
 
     ngOnInit() {
-      this.initializeWebSocketConnection();
+     // this.initializeWebSocketConnection();
       console.log("IN MAPS")
       this.userName = this.userService.user1.user_name;
     }
@@ -135,32 +164,10 @@ export class MapPage implements AfterViewInit {
     }
     initializeWebSocketConnection() {
       console.log(this.userService.currentUserType);
-      if(this.userService.currentUserType === 'user') {
-        const serverUrl = 'http://35.196.133.79/user';
-        const ws = new SockJS(serverUrl);
-        this.stompClient = Stomp.over(ws);
-        const that = this;
-        this.stompClient.connect({}, function(frame) {
-          that.stompClient.subscribe('/topic/send-approval', async (message) => {
-            console.log(message)
-            if (message.body) {
-              const toast = await that.toastCtrl.create({
-                message: 'Voila! Request Approved',
-                position: 'bottom',
-                duration: 2000
-              });
-              await toast.present();
-        
-              toast
-                .onDidDismiss()
-                .then(() => console.log("hi"));
-             // that.msg.push(message.body);
-            }
-          });
-        });
-      }
+     
+      
 
-      // tslint:disable-next-line:only-arrow-functions
+   
       
     }
 
