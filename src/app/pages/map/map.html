@@ -27,10 +27,10 @@
           <ion-card-header>
             <ion-item detail="false" lines="none" class="speaker-item" (click)="onLocationSelect(location)">
               <ion-avatar slot="start">
-                <img src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+                <img src="{{location.imgUrl}}">
               </ion-avatar>
               <ion-label>
-                <h2>{{location.name}}</h2>
+                <h2>{{location.merchant_name}}</h2>
               </ion-label>
             </ion-item>
           </ion-card-header>
@@ -63,7 +63,7 @@
         <ion-row class="ion-align-items-center">
           <ion-col>
             <h3 class="holder-name">
-              Anjali Verma
+              {{userName}}
             </h3>
            
           </ion-col>
