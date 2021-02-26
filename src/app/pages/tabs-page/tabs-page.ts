@@ -7,20 +7,20 @@ import { UserServiceService } from '../../user-service.service';
 export class TabsPage {
   constructor(private userService: UserServiceService) { }
   tabsArray = [
+    { "tabUrl": "about", "name" : "About", "icon": "information-circle"} ,
     { "tabUrl": "schedule", "name" : "Passbook", "icon": "calendar"}, 
     { "tabUrl": "map", "name" : "Location", "icon": "location"},
-    { "tabUrl": "about", "name" : "About", "icon": "information-circle"} 
   ];
   
   tabsUserArray = [
+    { "tabUrl": "about", "name" : "About", "icon": "information-circle"} ,
     { "tabUrl": "schedule", "name" : "Passbook", "icon": "calendar"}, 
     { "tabUrl": "map", "name" : "Location", "icon": "location"},
-    { "tabUrl": "about", "name" : "About", "icon": "information-circle"} 
   ];
 
   tabsGuardianArray = [
+    { "tabUrl": "about", "name" : "About", "icon": "information-circle"},
     { "tabUrl": "schedule", "name" : "Passbook", "icon": "calendar"}, 
-    { "tabUrl": "about", "name" : "About", "icon": "information-circle"} 
   ];
 
   ngOnInit() {
