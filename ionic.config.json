@@ -6,6 +6,6 @@
     },
     "proxies": [{
         "path": "/getCreditDetails",
-        "proxyUrl": "http://localhost:8080/getCreditDetails"
+        "proxyUrl": "http://35.196.133.79/getCreditDetails"
     }]
 }

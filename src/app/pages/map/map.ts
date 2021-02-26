@@ -108,7 +108,7 @@ export class MapPage implements AfterViewInit {
     private userService: UserServiceService) {
       this.userService.switchViewSource$.subscribe((userType: string) => {
         if(userType == 'user') {
-          const serverUrl = 'http://localhost:8080/user';
+          const serverUrl = 'http://35.196.133.79/user';
           const ws = new SockJS(serverUrl);
           this.stompClient = Stomp.over(ws);
           const that = this;
@@ -116,14 +116,13 @@ export class MapPage implements AfterViewInit {
             that.stompClient.subscribe('/topic/send-approval', async (message) => {
               console.log(message)
               if (message.body) {
-                
                 const toast = await that.toastCtrl.create({
                   message: 'Voila! Request Approved',
                   position: 'bottom',
                   duration: 2000
                 });
                 await toast.present();
-                this.payBtn = false;
+                that.payBtn = false;
                 toast
                   .onDidDismiss()
                   .then(() => console.log("hi"));
